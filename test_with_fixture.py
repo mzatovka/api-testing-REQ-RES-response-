@@ -14,29 +14,16 @@ header_auth = {
     'x-api-key': 'pro_4299c0733dac257311a8c9e1412f1f7905abdf538d224b661be17fe08d740f56'
     
 }
-
 @pytest.fixture
 def create_post():
-    
-    payload = {
-    "data": {
-    "title":"API Testing",
-    "body":"Homework task",
-    "author": "Student"
-} 
-}
-    response = requests.post( 
-                               
-    base_url,
-    headers=header_auth,
-    json = payload 
-)
-    print(response.status_code)
-    post_id = response.json()["data"]["id"]
-    
-    yield post_id
-    
-    requests.delete(f"{base_url}/{post_id}")
+
+    response = requests.get(base_url, headers=header_auth, params=project_id)
+    print(response.json()["data"][0])
+    records = response.json()["data"][0]
+
+    record_id = records['id']
+    yield record_id
+
     
 @pytest.mark.smoke
 @pytest.mark.regression        
