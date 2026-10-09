@@ -15,7 +15,7 @@ header_auth = {
     
 }
 @pytest.fixture
-def create_post():
+def get_post():
 
     response = requests.get(base_url, headers=header_auth, params=project_id)
     print(response.json()["data"][0])
@@ -72,11 +72,11 @@ def test_get_all_products():
     assert product_data['meta']['total'] > 0 
     
 @pytest.mark.regression
-def test_get_one_product(create_post):
+def test_get_one_product(get_post):
     
     info = requests.get(
     
-    f"{base_url}/{create_post}",
+    f"{base_url}/{get_post}",
     headers = header_auth,
     params=project_id
     
@@ -85,7 +85,7 @@ def test_get_one_product(create_post):
     assert info.status_code ==200
   
 @pytest.mark.regression
-def test_put(create_post):
+def test_put(get_post):
     
     new_data = {
         
@@ -99,7 +99,7 @@ def test_put(create_post):
         
     response_create  = requests.put(
         
-        f"{base_url}/{create_post}",   # какой id и где его брать для изменения 
+        f"{base_url}/{get_post}",   # какой id и где его брать для изменения 
         headers=header_auth,         
         params=project_id,           
         json=new_data
@@ -114,11 +114,11 @@ def test_put(create_post):
     assert json_data["data"]["data"]['title'] == 'Testing'
     
 @pytest.mark.regression  
-def test_delete(create_post):
+def test_delete(get_post):
 
     response_create = requests.delete(
         
-    base_url + '/' + str(create_post),
+    base_url + '/' + str(get_post),
     headers = header_auth,
     params=project_id         
 
